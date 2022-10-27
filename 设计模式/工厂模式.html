@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let AccountAbstractFactory = function (subType, superType) {
+        //判断抽象工厂中是否有该抽象类
+        if (typeof AccountAbstractFactory[superType] === "function") {
+          //缓存类
+          function F() {}
+          //继承父类属性和方法
+          F.prototype = new AccountAbstractFactory[superType]();
+          //将子类的constructor指向子类
+          subType.constructor = subType;
+          //子类原型继承父类
+          subType.prototype = new F();
+        } else {
+          throw new Error("抽象类不存在!");
+        }
+      };
+
+      //微信用户抽象类
+      AccountAbstractFactory.WechatUser = function () {
+        this.type = "wechat";
+      };
+      AccountAbstractFactory.WechatUser.prototype = {
+        getName: function () {
+          return new Error("抽象方法不能调用");
+        },
+      };
+
+      //qq用户抽象类
+      AccountAbstractFactory.QqUser = function () {
+        this.type = "qq";
+      };
+      AccountAbstractFactory.QqUser.prototype = {
+        getName: function () {
+          return new Error("抽象方法不能调用");
+        },
+      };
+
+      //新浪微博用户抽象类
+      AccountAbstractFactory.WeiboUser = function () {
+        this.type = "weibo";
+      };
+      AccountAbstractFactory.WeiboUser.prototype = {
+        getName: function () {
+          return new Error("抽象方法不能调用");
+        },
+      };
+    </script>
+  </body>
+</html>

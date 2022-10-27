@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>递归清除对象中的空值</title>
+  </head>
+
+  <body>
+    <script>
+      let obj = {
+        a: "1",
+        b: [
+          {},
+          {
+            c: 2,
+            d: {
+              1: [],
+              2: [1],
+            },
+          },
+        ],
+        C: [],
+      };
+      clearNull(obj);
+
+      function clearNull(data) {
+        if (typeof data !== "object") throw "请输入一个对象或者数组";
+
+        if (Array.isArray(data)) {
+          for (let i = 0; i < data.length; i++) {
+            const item = data[i];
+            if (isEmpty(item)) {
+              data.splice(i, 1);
+              i--;
+            } else {
+              if (typeof item === "object") {
+                clearNull(item);
+              }
+            }
+          }
+        } else {
+          for (let key in data) {
+            const val = data[key];
+            if (isEmpty(val)) {
+              delete data[key];
+            } else {
+              if (typeof val === "object") {
+                clearNull(val);
+              }
+            }
+          }
+        }
+      }
+
+      function isEmpty(data) {
+        if (typeof data === "object") {
+          return Object.keys(data).length <= 0;
+        } else {
+          return data === "" || data === null || data === undefined;
+        }
+      }
+      console.log("obj=", obj);
+    </script>
+  </body>
+</html>

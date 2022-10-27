@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class MyPromise {
+        constructor(callback) {
+          this.promise_state = "pending";
+          this.cb = null;
+          this.data = null;
+          callback(this.resolve.bind(this), this.reject.bind(this));
+        }
+
+        static resolve(data) {
+          return new Promise((r) => r(data));
+        }
+        static reject(data) {
+          return new Promise((r, j) => j(data));
+        }
+
+        resolve(data) {
+          if (this.promise_state === "pending") {
+            this.promise_state = "fulfilled";
+            this.cb ? this.cb(data) : (this.data = data);
+          }
+        }
+        reject(err) {}
+
+        then(cb) {
+          if (this.promise_state === "fulfilled") {
+            cb(this.data);
+          } else {
+            this.cb = cb;
+          }
+        }
+
+        catch() {}
+      }
+
+      const promise = new MyPromise((resolve) => {
+        // setTimeout(() => resolve("end"), 2e3);
+        resolve("end");
+      });
+
+      promise.then((rsp) => {
+        console.log("rsp", rsp);
+      });
+    </script>
+  </body>
+</html>

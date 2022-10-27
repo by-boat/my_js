@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 现在有一个私有属性的 es 草案，可以通过 # 的方式来标识私有属性和方法。
+       * 这里的 name 和 age 都是私有的，而 friend 是共有的。
+       * 这种新语法 JS 引擎没那么快支持，但是可以通过 babel 或者 ts 编译器来编译成低版本语法的方式来提前用。
+       * 比如 babel 有 @babel/proposal-private-property-in-object 的插件，它可以实现这种语法的编译。
+       */
+      class Dong {
+        constructor() {
+          this.#name = "dong";
+          this.#age = 20;
+          this.friend = "guang";
+        }
+        hello() {
+          return "I'm " + this.#name + this.#age + "years old";
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 这种方式只是一种规范约定，很容易被打破。而且也并没有实现私有属性，上述代码中的实例person可以直接访问到_name属性
+       */
+      const Person = function (name) {
+        this._name = name;
+      };
+      const person = new Person("彦祖");
+    </script>
+  </body>
+</html>

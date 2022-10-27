@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 在构造函数内定义局部变量和特权函数，实例只能通过特权函数来访问此变量
+       * 
+       * 优点：实现了私有属性的隐藏，Person 的实例并不能直接访问_name属性，只能通过特权函数getName获取
+       * 缺点：私有变量和特权函数只能在构造函数中创建。通常来讲，构造函数的功能只负责创建新对象，方法应该共享于prototype上。特权函数本质上是存在于每个实例中的，而不是prototype上，增加了资源占用。
+       */
+      const Person = function (name) {
+        var _name = name;
+        this.getName = function () {
+          return _name;
+        };
+      };
+
+      const person1 = new Person("彦祖");
+      const person2 = new Person("冠希");
+      console.log(
+        "🚀 ~ file: 02.基于闭包实现.html ~ line 19 ~ person1",
+        person1
+      );
+      console.log(
+        "🚀 ~ file: 02.基于闭包实现.html ~ line 19 ~ person1",
+        person2
+      );
+    </script>
+  </body>
+</html>

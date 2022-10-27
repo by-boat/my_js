@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 添加WeakMap，避免对象 自己引用自己造成死循环，还有弱应用，减少资源占用
+      function deep_clone(data, map = new WeakMap()) {
+        if (typeof data !== "object") return data;
+        let obj = Array.isArray(data) ? [] : {};
+        if (map.has(data)) return map.get(data);
+        map.set(data, obj);
+        // 不采取for in是因为for in会遍历原型上的属性
+        Object.keys(data).forEach((k) => (obj[k] = deep_clone(data[k])));
+        return obj;
+      }
+      const obj1 = { a: 1, b: [], c: { d: 1 } };
+      const obj2 = deep_clone(obj1);
+      const arr1 = [1, [], { a: 1 }];
+      const arr2 = deep_clone(arr1);
+      console.log(obj1 === obj2);
+      console.log(arr1 === arr2);
+    </script>
+  </body>
+</html>

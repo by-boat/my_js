@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      Function.prototype.before = function (beforefn) {
+        var self = this;
+        //保存原函数引用
+        return function () {
+          //返回包含了原函数和新函数的 '代理函数'
+          beforefn.apply(this, arguments);
+          //执行新函数，修正this
+          return self.apply(this, arguments);
+          //执行原函数
+        };
+      };
+      Function.prototype.after = function (afterfn) {
+        var self = this;
+        return function () {
+          var ret = self.apply(this, arguments);
+          afterfn.apply(this, arguments);
+          return ret;
+        };
+      };
+      var func = function () {
+        console.log("2");
+      };
+      //func1和func3为挂载函数
+      var func1 = function () {
+        console.log("1");
+      };
+      var func3 = function () {
+        console.log("3");
+      };
+      func = func.before(func1).after(func3);
+      func();
+      console.log(func)
+    </script>
+  </body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const axios = (data) => {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve('结果：' + data),800)
+      })
+    }
+    const urls = []
+    for (let i = 0; i < 100; i++) {
+      urls.push('https' + i)
+    }
+
+
+    function request_all(urls, max) {
+      return new Promise(async (resolve) => {
+        let index = 0
+        const result = []
+        async function request(url) {
+          const i = index
+          index++
+          console.log('请求', url)
+          const res = await axios(url)
+          result[i] = res
+          if (index === urls.length) {
+            resolve(result)
+          } else {
+            request(urls[index])
+          }
+        }
+
+        for (let i = 0; i < max; i++) {
+          request(urls[index])
+        }
+      })
+    }
+
+    request_all(urls, 3).then(res => {
+      console.log('看看结果', res)
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <style type="text/css">
+    .pickdiv {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      border: 2px solid gray;
+      display: inline-block;
+    }
+    #white {
+      background: white;
+    }
+    #red {
+      background: #ff6666;
+    }
+    #yellow {
+      background: #ffff00;
+    }
+    #blue {
+      background: #333399;
+    }
+    #green {
+      background: #339933;
+    }
+    #cv_video {
+      position: absolute;
+      z-index: 1;
+    }
+    #barrageplayer {
+      position: relative;
+      display: block;
+      width: 900px;
+      height: 500px;
+    }
+    #v_video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+  </style>
+
+  <body>
+    <div id="barrageplayer">
+      <canvas id="cv_video" width="900px" height="450px"></canvas>
+      <video id="v_video" src="test.MP4" controls type="video/mp4"></video>
+    </div>
+    <div id="barrageinput">
+      <div>
+        <input type="text" id="smsg" placeholder="请输入弹幕内容" />
+        <button id="send">发送</button>
+      </div>
+      <div id="colorpick">
+        <div class="pickdiv" id="white"></div>
+        <div class="pickdiv" id="red"></div>
+        <div class="pickdiv" id="yellow"></div>
+        <div class="pickdiv" id="blue"></div>
+        <div class="pickdiv" id="green"></div>
+      </div>
+      <div id="typepick">
+        <input type="radio" name="type" value="default" />默认
+        <input type="radio" name="type" value="static top" />静止顶部
+        <input type="radio" name="type" value="static bottom" />静止底部
+      </div>
+      <div id="speedpick">
+        <input type="radio" name="speed" value="1" />1X
+        <input type="radio" name="speed" value="2" />2X
+        <input type="radio" name="speed" value="3" />3X
+      </div>
+      <div id="stylepick"></div>
+    </div>
+
+    <script>
+      var c = document.getElementById("cv_video");
+
+      var typeDom = document.getElementsByName("type");
+      var speedDom = document.getElementsByName("speed");
+      var colorpick = document.getElementById("colorpick");
+      var smsg = document.getElementById("smsg");
+
+      var color = "#white";
+      var speed = 1;
+      var type = "default";
+      var msgs = [];
+
+      //获取画布大小
+      var c_height = c.height;
+      var c_width = c.width;
+
+      //获取画布
+      ctx = c.getContext("2d");
+      ctx.font = "25px DengXian";
+
+      //处理颜色选择
+      colorpick.addEventListener("click", function (event) {
+        switch (event.target.id) {
+          case "white":
+            color = "white";
+            break;
+          case "red":
+            color = "#ff6666";
+            break;
+          case "yellow":
+            color = "#ffff00";
+            break;
+          case "green":
+            color = "#339933";
+            break;
+          case "blue":
+            color = "#333399";
+            break;
+        }
+      });
+
+      //处理发送弹幕
+      document.getElementById("send").onclick = function () {
+        var text = smsg.value;
+        for (var i = 0; i < typeDom.length; i++) {
+          if (typeDom[i].checked) {
+            type = typeDom[i].value;
+            break;
+          }
+        }
+        for (var i = 0; i < speedDom.length; i++) {
+          if (speedDom[i].checked) {
+            speed = 2 * parseInt(speedDom[i].value);
+            break;
+          }
+        }
+        var tempBarrage = new Barrage(text, color, type, speed);
+        msgs.push(tempBarrage);
+      };
+
+      //弹幕功能部分代码
+      //弹幕对象
+      function Barrage(content, color, type, speed) {
+        this.content = content;
+        this.color = color;
+        this.type = type;
+        this.speed = speed;
+
+        if (this.type == "default") {
+          this.height = parseInt(Math.random() * c_height) + 10;
+        } else if (this.type == "static top") {
+          this.height =
+            parseInt(c_height / 2 - (Math.random() * c_height) / 2) + 10;
+        } else if (this.type == "static bottom") {
+          this.height =
+            parseInt(c_height / 2 + (Math.random() * c_height) / 2) + 10;
+        }
+        if (typeof this.move != "function") {
+          Barrage.prototype.move = function () {
+            if (this.type == "default") {
+              this.left = this.left - this.speed;
+            }
+          };
+        }
+      }
+
+      //循环擦写画布实现动画效果
+      setInterval(function () {
+        console.log('1213')
+        ctx.clearRect(0, 0, c_width, c_height);
+        ctx.save();
+        for (var i = 0; i < msgs.length; i++) {
+          if (msgs[i] != null) {
+            if (msgs[i].type == "default") {
+              handleDefault(msgs[i]);
+            } else {
+              handleStatic(msgs[i]);
+            }
+          }
+        }
+      }, 20);
+
+      //处理默认弹幕样式
+      function handleDefault(barrage) {
+        console.log('barrage=',barrage)
+        if (barrage.left == undefined || barrage.left == null) {
+          barrage.left = c.width;
+        } else {
+          if (barrage.left < -200) {
+            barrage = null;
+          } else {
+            barrage.move();
+            ctx.fillStyle = barrage.color;
+            ctx.fillText(barrage.content, barrage.left, barrage.height);
+            ctx.restore();
+          }
+        }
+      }
+
+      //处理静止弹幕样式
+      function handleStatic(barrage) {
+        ctx.moveTo(c_width / 2, barrage.height);
+        ctx.textAlign = "center";
+        ctx.fillStyle = barrage.color;
+        ctx.fillText(barrage.content, c_width / 2, barrage.height);
+        if (barrage.left == undefined || barrage.left == null) {
+          barrage.left = c.width;
+        } else {
+          if (barrage.left < -200) {
+            ctx.fillText("", c_width / 2, barrage.height);
+            barrage = null;
+            //ctx.restore();
+            ctx.clearRect(0, 0, c_width, c_height);
+          } else {
+            barrage.left = barrage.left - 6;
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

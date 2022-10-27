@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>选择排序</title>
+  </head>
+  <body>
+    <script>
+      /** 
+        选择排序
+        核心思想：选择第一个索引的位置，和后面的元素依次比较，如果后面的元素小于第一个元素，记录索引，此轮结束时交换位置，经过一轮比较后可以选出此轮的最小值。
+        时间复杂度：O(n^2)
+        空间复杂度：O(1)
+
+        循环次数  36 
+        */
+      const arr = [12, 8, 24, 16, 1, 34, 23, 12, 54];
+
+      let min;
+      for (let i = 0; i < arr.length - 1; i++) {
+        min = i;
+        for (let j = i + 1; j < arr.length; j++) {
+          if (arr[min] > arr[j]) {
+            min = j;
+          }
+        }
+        [arr[i], arr[min]] = [arr[min], arr[i]];
+      }
+      console.log(arr);
+    </script>
+  </body>
+</html>

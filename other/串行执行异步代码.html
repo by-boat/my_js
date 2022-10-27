@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       *诉求：封装一个方法实现Promise.all，但是需要在上一个promise，resolve之后再执行下一个promise
+       * 1. 接收的参数与promise.all不一样，promise接受的数组里面每个元素都是promise对象，要求封装的函数接收的数组每个元素都是一个函数（返回promise对象）
+       * 2. 有两种实现方法-- 1. for循环配合async与await 2. 递归
+       */
+
+      const promise1 = () => new Promise((r) => setTimeout(r, 2000));
+      const promise2 = () => new Promise((r) => setTimeout(r, 2000));
+
+      function chuanxing(fn_list) {
+        console.log(new Date());
+        return new Promise((resolve) => {
+          const result = [];
+
+          //   使用forEach遍历配合async 以及 await 无法实现
+          //   fn_list.forEach(async (fn) => {
+          //     console.log("888");
+          //     const res = await fn();
+          //     result.push(res);
+          //     console.log("666");
+          //     result.length === fn_list.length && resolve(result);
+          //   });
+
+          //   使用for循环可以
+          (async () => {
+            for (let i = 0; i < fn_list.length; i++) {
+              console.log("run", i);
+              const rsp = await fn_list[i]();
+              result.push(rsp);
+              result.length === fn_list.length && resolve(result);
+            }
+          })();
+        });
+      }
+
+      //   递归实现
+      function chuanxing2(fn_list) {
+        return new Promise((resolve) => {
+          const result = [];
+          function run() {
+            fn_list[result.length]().then((rsp) => {
+              result.push(rsp);
+              if (result.length === fn_list.length) {
+                resolve(result);
+                return;
+              }
+              run();
+            });
+          }
+          run();
+        });
+      }
+
+      chuanxing([promise1, promise2]).then((rsp) =>
+        console.log(rsp, new Date())
+      );
+      chuanxing2([promise1, promise2]).then((rsp) =>
+        console.log(rsp, new Date())
+      );
+    </script>
+  </body>
+</html>

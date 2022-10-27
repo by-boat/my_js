@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 使用proxy劫持对象属性的get，set，ownKeys，当属性以_开头的就不让访问
+       * 这样就实现了下划线开头的属性的私有化
+       *
+       * 我们通过 new Proxy 来给 dong 定义了 get、set、ownKeys 的 handler：
+       * get: 如果以下划线 _ 开头就返回空，否则返回目标对象的属性值 target[prop]。
+       * set: 如果以下划线 _ 开头就直接返回，否则设置目标对象的属性值。
+       * ownKeys: 访问 keys 时，过滤掉目标对象中下划线开头的属性再返回。
+       */
+      const person = function (name) {
+        function Person(name) {
+          this._name = name;
+        }
+        const person = new Proxy(new Person(name), {
+          get(target, prop) {
+            if (prop.startsWith("_")) {
+              throw new Error(prop + " 为私有属性！");
+              return;
+            }
+            return target[prop];
+          },
+          set(target, prop, value) {
+            if (prop.startsWith("_")) {
+              return;
+            }
+            target[prop] = value;
+          },
+          ownKeys(target, prop) {
+            return Object.keys(target).filter((key) => !key.startsWith("_"));
+          },
+        });
+        return person;
+      };
+
+      const person1 = person("彦祖");
+      const person2 = person("冠希");
+      console.log(
+        "🚀 ~ file: 05.基于proxy约束.html ~ line 35 ~ person1",
+        person1._name
+      );
+      console.log(
+        "🚀 ~ file: 05.基于proxy约束.html ~ line 35 ~ person1",
+        person2
+      );
+    </script>
+  </body>
+</html>

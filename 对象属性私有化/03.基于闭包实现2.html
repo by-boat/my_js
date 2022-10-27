@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 该方法基于02闭包的实现区别在于：02闭包是每个实例中都会有一个getName方法会增加资源占用
+       * 维护一个对象以及一个id，所有实例的name属性都通过 id：name的形式保存在对象中，getName方法不需要给每个实例都定义，而是放在原型对象上，调用时通过实例的id去对象中获取value
+       *
+       * 这种方式在目前ES5环境下，基本是最佳方案了。但是仍然有一个致命的缺陷：
+       * 散列表privateData对每个实例都是强引用，导致实例不能被垃圾回收处理。如果存在大量实例必然会导致内存泄漏
+       */
+      var Person_ = (function () {
+        var privateData = {};
+        var privateId = 0;
+
+        function Person(name) {
+          // 创建实例时在实例中生成唯一id
+          Object.defineProperty(this, "_id", { value: privateId++ });
+
+          // 并以_id为key name为value存入privateData对象中
+          privateData[this._id] = {
+            name: name,
+          };
+        }
+
+        // 原型上的getName方法，调用时会通过实例id返回对应的value
+        Person.prototype.getName = function () {
+          return privateData[this._id].name;
+        };
+
+        return Person;
+      })();
+      const person1 = new Person_("彦祖");
+      const person2 = new Person_("冠希");
+      console.log("🚀 ~ file: 03.基于map.html ~ line 30 ~ person1", person1);
+      console.log("🚀 ~ file: 03.基于map.html ~ line 30 ~ person1", person2);
+    </script>
+  </body>
+</html>

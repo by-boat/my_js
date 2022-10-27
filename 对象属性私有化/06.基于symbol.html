@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 使用symbol生成的唯一值来作用实例属性名，这样外部如果拿不到该symbol值就无法访问这个属性了
+       */
+      const nameSymbol = Symbol("name");
+      const ageSymbol = Symbol("age");
+      class Dong {
+        constructor() {
+          this[nameSymbol] = "dong";
+          this[ageSymbol] = 20;
+        }
+        hello() {
+          return (
+            "I'm " + this[nameSymbol] + ", " + this[ageSymbol] + " years old"
+          );
+        }
+      }
+      const dong = new Dong();
+      console.log("🚀 ~ file: 06.基于symbol.html ~ line 25 ~ dong", dong);
+    </script>
+  </body>
+</html>

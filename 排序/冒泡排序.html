@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>冒泡排序</title>
+  </head>
+  <body>
+    <script>
+      /** 
+       冒泡排序是升序排列
+       核心思想：让数组的当前项和后一项进行比较，如果当前项比后一项大，就交换位置。
+       时间复杂度：O(n^2)
+       空间复杂度：O(1)
+
+       循环次数  36 
+      */
+
+      let arr = [12, 8, 24, 16, 1, 34, 23, 12, 54];
+      // 控制比较的轮数
+      for (let i = 0; i < arr.length - 1; i++) {
+        for (let j = 0; j < arr.length - 1 - i; j++) {
+          console.log("总共循环");
+          if (arr[j] > arr[j + 1]) {
+            // 解构赋值
+            // [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            const n = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = n;
+          }
+        }
+      }
+      console.log(arr);
+      /**
+       内for循环，j < arr.length - 1 - i 这个减 i 的操作讲解：
+       当内部循环完一次之后就会有一个最大值出现在最右侧，走第二次内for循环，我们就没有必要再跟最后面那个老大哥比较了
+       */
+    </script>
+  </body>
+</html>

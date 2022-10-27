@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 在03闭包.html中我们使用的方法是给每个实例创建一个唯一标识符，在当前方法我们采用的方式与03闭包.html一致，只是标识符我们不再使用_id而是 weakmap
+       * 解决的问题是：03闭包.html中 散列表privateData对每个实例都是强引用，导致实例不能被垃圾回收处理。如果存在大量实例必然会导致内存泄漏
+       * 使用 weakmap 是一种弱引用散列表， 这意味着,如果没有其他引用和该键引用同一个对象,这个对象将会被当作垃圾回收掉。解决了内存泄露的问题。
+       *
+       * 不幸的是，目前浏览器对WeakMap的支持率并不理想，投入生产环境仍然需要等待。
+       */
+      var Person = (function () {
+        var privateData = new WeakMap();
+
+        function Person(name) {
+          privateData.set(this, { name: name });
+        }
+
+        Person.prototype.getName = function () {
+          return privateData.get(this).name;
+        };
+
+        return Person;
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 手写 new 关键字所做的事情
+       * 1. 创建一个对象
+       * 2. 该对象的隐式原型指向构造函数的原型对象
+       * 3. 执行构造函数，并改变其this指向
+       * 4. 返回对象
+       */
+      function new_(fn) {
+        if (typeof fn !== "function") throw "fn is not a function";
+        if (!fn.prototype) throw new Error("fn is not constructor");
+        const obj = {};
+        obj.__proto__ = fn.prototype;
+        fn.call(obj);
+        return obj;
+      }
+
+      function aa() {
+        this.a = 1;
+      }
+      const bb = () => {};
+
+      const shili1 = new aa();
+      const shili2 = new_(aa);
+      console.log(
+        "🚀 ~ file: 手写new关键字步骤.html ~ line 23 ~ shili1",
+        shili1
+      );
+      console.log(
+        "🚀 ~ file: 手写new关键字步骤.html ~ line 23 ~ shili1",
+        shili2
+      );
+    </script>
+  </body>
+</html>
