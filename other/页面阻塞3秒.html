@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /** 
+     * 实现阻塞页面3秒
+     * 使用循环实现
+    */
+
+    console.log('start', new Date())
+    // for (let start = Date.now(); Date.now() - start < 3000;) { }
+
+    let end = Date.now() + 3000;
+    while (Date.now() < end);
+    console.log('end', new Date())
+
+  </script>
+</body>
+
+</html>
