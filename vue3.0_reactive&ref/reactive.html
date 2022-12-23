@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="box">18</div>
+  <button onclick="add()">++</button>
+  <script>
+    /** 
+     * Object.prototype.hasOwnProperty  只检查对象的自有属性，不会检测原形上的属性
+     * hasOwnProperty 例子：
+      const obj = {
+        a: 1
+      }
+      obj.__proto__.b = 2
+      obj.hasOwnProperty('a') // true
+      obj.hasOwnProperty('b') // false
+    */
+    const isObject = (val) => val !== null && typeof val === "object";
+    const convert = (target) => isObject(target) ? reactive(target) : target;
+    const hasOwnProperty = Object.prototype.hasOwnProperty; // 只检查对象的自有属性，不会检测原形上的属性
+    const hasOwn = (target, key) => hasOwnProperty.call(target, key);
+
+    function render(value) {
+      const box = document.querySelector('.box')
+      box.innerText = value
+    }
+
+    function reactive(target) {
+      const handler = {
+        get(target, key, receiver) {
+          // receiver 为代理对象
+          console.log("获取", target, key, receiver);
+          const result = Reflect.get(target, key, receiver);
+          // 如果属性是对象则需要递归处理
+          return convert(result);
+        },
+        set(target, key, value, receiver) {
+          console.log("修改", target, key, value, receiver);
+          const oldValue = Reflect.get(target, key, receiver);
+          let result = true;
+          if (oldValue !== value) {
+            result = Reflect.set(target, key, value, receiver);
+            render(value)
+            // 触发更新...
+          }
+          // set方法需要返回布尔值
+          return result;
+        },
+        //   引用类型数据的删除也可以监听得到
+        deleteProperty(target, key) {
+          console.log("删除", target, key);
+          // 首先要判断当前target中是否有自己的key属性
+          // 如果存在key属性，并且删除要触发更新
+          const hasKey = hasOwn(target, key);
+          const result = Reflect.deleteProperty(target, key);
+          if (hasKey && result) {
+            // 触发更新...
+          }
+          return result;
+        },
+      };
+
+      return new Proxy(target, handler);
+    }
+
+    // function ref(data) {
+    //   return reactive({ value: data })
+    // }
+
+    // const pp = ref(1)
+    // pp.value
+
+    const state = reactive({
+      name: '彦祖',
+      age: 18,
+    })
+
+    function add() {
+      state.age++
+    }
+
+    const arr = reactive([1, 2, 3])
+    arr.push(1)
+  </script>
+</body>
+
+</html>

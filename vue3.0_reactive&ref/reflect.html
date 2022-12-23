@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+
+    // const obj1 = {
+    //   get age() {
+    //     return this._age
+    //   }
+    // }
+    // const obj2 = { _age: 18 }
+
+    // const age = Reflect.get(obj1, 'age')
+
+    // console.log('age ===', age)
+
+
+
+    const user = {
+      _name: '于晏',
+      get name() {
+        return this._name;
+      },
+    };
+
+    const userProxy = new Proxy(user, {
+      get(target, key, receiver) { // receiver = admin
+        return Reflect.get(target, key);
+        // return Reflect.get(target, key, receiver);
+      }
+    });
+
+    const admin = {
+      __proto__: userProxy,
+      _name: "彦祖",
+    };
+
+    console.log(admin.name);
+  </script>
+</body>
+
+</html>
