@@ -1,31 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <input type="text" class="inp" />
-    <script>
-      const inp = document.querySelector(".inp");
-      inp.oninput = (e) => {
-        request(e.target.value);
-      };
 
-      //   防抖后
-      let timer;
-      inp.oninput = (e) => {
-        clearTimeout(timer);
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" class="inp" />
+  <script>
+    /**
+     * 防抖
+     * desc:多次快速的触发某个事件的时候，只执行最后一次
+     * @param {Function} fn 防抖的目标函数
+     * @param {Number} wait 防抖定时器时间
+     * @param {Boolone} immediate 是否立即执行
+    */
+    const debounce = (fn, wait, immediate = false) => {
+      let timer, startTimeStamp = 0;
+      let context, args;
+
+      const run = (timerInterval) => {
         timer = setTimeout(() => {
-          request(e.target.value);
-        }, 700);
-      };
+          const now = (new Date()).getTime();
+          const interval = now - startTimeStamp
+          if (interval < timerInterval) { // the timer start time has been reset，so the interval is less than timerInterval
+            startTimeStamp = now;
+            run(wait - interval);  // reset timer for left time 
+          } else {
+            if (!immediate) {
+              fn.apply(context, args);
+            }
+            clearTimeout(timer);
+            timer = null;
+          }
 
-      function request(data) {
-        console.log("发起请求", data);
+        }, timerInterval);
       }
-    </script>
-  </body>
+
+      return function () {
+        context = this;
+        args = arguments;
+        let now = (new Date()).getTime();
+        startTimeStamp = now; // set timer start time
+
+        if (!timer) {
+          if (immediate) {
+            fn.apply(context, args);
+          }
+          run(wait);    // last timer alreay executed, set a new timer
+        }
+      }
+    }
+
+
+    const inp = document.querySelector(".inp");
+    inp.oninput = debounce((e) => request(e.target.value), 500)
+    function request(data) {
+      console.log("发起请求", data);
+    }
+  </script>
+</body>
+
 </html>

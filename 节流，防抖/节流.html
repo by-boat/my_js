@@ -1,37 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <style>
-    .box {
-      width: 300px;
-      height: 300px;
-      background-color: pink;
-    }
-  </style>
-  <body>
-    <div class="box"></div>
-    <script>
-      const box = document.querySelector(".box");
-      // 节流前
-      // box.onmousemove = (e) => {
-      //   box.innerText = e.clientX + "，" + e.clientY;
-      // };
 
-      // 节流后
-      let isRun = false;
-      box.onmousemove = (e) => {
-        if (isRun) return;
-        isRun = true;
-        setTimeout(() => {
-          box.innerText = e.clientX + "，" + e.clientY;
-          isRun = false;
-        }, 2e3);
-      };
-    </script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" class="inp" />
+  <script>
+    const box = document.querySelector(".box");
+    /**
+     * 节流
+     * desc：多次快速的触发某个事件，会按照设定的时间间隔规律的执行
+    * @param {Function} fn 节流的目标函数
+    * @param {Number} wait 节流定时器时间
+    * @param {Boolone} immediate 是否立即执行
+   */
+    const throttling = (fn, wait, immediate) => {
+      let timer, timeStamp = 0;
+      let context, args;
+
+      const run = () => {
+        timer = setTimeout(() => {
+          if (!immediate) {
+            fn.apply(context, args);
+          }
+          clearTimeout(timer);
+          timer = null;
+        }, wait);
+      }
+
+      return function () {
+        context = this;
+        args = arguments;
+        if (!timer) {
+          if (immediate) {
+            fn.apply(context, args);
+          }
+          run();
+        } else { }
+      }
+    }
+
+    const inp = document.querySelector(".inp");
+    inp.oninput = throttling((e) => request(e.target.value), 500)
+    function request(data) {
+      console.log("发起请求", data);
+    }
+  </script>
+</body>
+
 </html>
