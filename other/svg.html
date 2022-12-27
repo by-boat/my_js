@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<style>
+  .anim {
+    animation: lineMove 3s ease-out infinite;
+    stroke-width: 1;
+    stroke: #729C62;
+  }
+
+  @keyframes lineMove {
+    0% {
+      stroke-dasharray: 0, 378;
+    }
+
+    50% {
+      stroke-dasharray: 378, 378;
+      fill: rgba(0, 0, 0, 0);
+      opacity: 1;
+    }
+
+    80% {
+      stroke-dasharray: 378, 378;
+      fill: #729C62df;
+      opacity: 1;
+    }
+
+    100% {
+      stroke-dasharray: 378, 378;
+      fill: rgba(255, 119, 0, .5);
+      opacity: 0;
+    }
+  }
+</style>
+
+<body>
+  <button onclick="change_svg_main()">click</button>
+  <svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <title>Layer 1</title>
+      <ellipse fill="#729C62" ry="23" rx="134.5" id="svg_3" cy="314.5" cx="227.5" />
+      <path class="anim" id="svg_6"
+        d="m227.32284,232.04589c-3.77612,-7.45046 -8.39594,-13.48238 -13.02995,-17.70195c-5.40716,4.32508 -11.99278,6.95873 -19.17239,6.95873c-7.19371,0 -13.7888,-2.63878 -19.18643,-6.95873c-4.63399,4.21956 -9.25853,10.25149 -13.04392,17.70195c-8.78721,17.29783 -9.75359,35.04099 -2.1639,39.64155c3.39898,2.07241 6.96277,0.52775 10.64456,-3.34685c-0.64584,3.92861 -1.02299,8.18671 -1.02299,12.64057c0,19.78735 7.03825,35.81593 15.71214,35.81593c5.22804,0 7.81608,-5.83637 9.06055,-14.77228c1.23988,8.93592 3.82789,14.77228 9.03699,14.77228c8.68814,0 15.72646,-16.02858 15.72646,-35.81593c0,-4.45386 -0.37728,-8.71196 -1.03715,-12.64057c3.69114,3.87461 7.25023,5.41926 10.65865,3.34685c7.58502,-4.60056 6.60437,-22.34373 -2.1826,-39.64155l-0.00001,0zm-32.21161,-17.49343c14.59483,0 26.432,-12.92889 26.432,-28.87766s-11.83717,-28.87769 -26.432,-28.87769c-14.5998,0 -26.44631,12.93147 -26.44631,28.87769s11.84652,28.87766 26.44631,28.87766z"
+        stroke="#000" fill="#fff" />
+      <text xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" id="svg_5" y="300.67014"
+        x="346.00888" stroke-width="0" stroke="#000" fill="#000000">1</text>
+    </g>
+  </svg>
+
+  <script>
+    /**
+     * Date:2022/12/27
+     * 写这个玩意儿的原因是因为有个需求，小程序的动画
+     * ui提供了json数据，前端使用lottie-miniprogram库可以正常展示动画
+     * 但是！产品不满足于此,希望动画中的文案是后台可配置的，于是调研了一下怎么实现
+     * 实现不了~
+     * 查了一通资料后发现svg可以动态改里面的内容,但是小程序中无法使用
+     * 使用上面所说的lottie库最终是以canvas的形式展示出来，前端就没办法干涉展示的内容
+     * 
+     * https://c.runoob.com/more/svgeditor/ svg在线编辑器
+    */
+
+    let timer = null
+    function change_svg_main() {
+      const targetEL = document.querySelector('#svg_5');
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      } else {
+        timer = setInterval(() => {
+          targetEL.innerHTML = targetEL.innerHTML * 1 + 1;
+        }, 50)
+      }
+
+    }
+  </script>
+</body>
+
+</html>
