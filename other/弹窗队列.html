@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>弹窗队列</title>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<style>
+
+</style>
+
+<body>
+  <!-- react的容器 -->
+  <div id="app"></div>
+</body>
+
+</html>
+<script type="text/babel">
+  /** 
+   * 简单实现一下 弹窗队列
+  */
+  const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type;
+  const isObject = (val) => isPrimitiveType(val, '[object Object]');
+  const isNumber = (val) => isPrimitiveType(val, '[object Number]');
+  const isFunction = (val) => isPrimitiveType(val, '[object Function]');
+
+  class PopupQueue {
+    constructor(target) {
+      this.win_list = [];
+      this.that = target
+    }
+
+    // 注册弹窗
+    registerWin = (popup_info) => {
+      if (!isObject(popup_info)) {
+        throw new Error('push方法需要传入一个对象')
+      }
+      if (!isNumber(popup_info.weight) || popup_info.weight !== popup_info.weight) { // 也可用isNaN判断
+        throw new Error('push方法传入的对象中需要weight字段,类型为number')
+      }
+      if (!isFunction(popup_info.show)) {
+        throw new Error('push方法传入的对象中需要show字段,类型为funciton')
+      }
+      this.win_list.push(popup_info)
+    }
+
+    showWin() {
+      if (this.win_list.length <= 0) {
+        throw new Error('请确保有弹窗加入到队列中')
+      }
+      // 根据权重排序
+      for (let i = 0; i < this.win_list.length; i++) {
+        let j = i;
+        let temp = this.win_list[i];
+        while (j > 0 && this.win_list[j - 1].weight < temp.weight) {
+          this.win_list[j] = this.win_list[j - 1];
+          j--;
+        }
+        this.win_list[j] = temp
+      }
+      this.win_list[0].show.apply(this.that)
+    }
+
+    hide() {
+      if (this.win_list.length <= 0) {
+        throw new Error('请确保有弹窗加入到队列中')
+      }
+      this.win_list.shift()
+      this.win_list[0].show.apply(this.that)
+    }
+  }
+
+  class Weather extends React.Component {
+    constructor(props) {
+      super(props);
+      this.popupQueue = new PopupQueue(this)
+    }
+    state = {
+      pop1: false,
+      pop2: false,
+      pop3: false,
+    }
+
+    componentDidMount() {
+      this.popupQueue.registerWin({
+        show() {
+          this.setState({ pop1: true })
+        },
+        weight: 2
+      })
+      this.popupQueue.registerWin({
+        show: () => {
+          this.setState({ pop2: true })
+        },
+        weight: 1
+      })
+      this.popupQueue.registerWin({
+        show: () => {
+          this.setState({ pop3: true })
+        },
+        weight: 2
+      })
+      this.popupQueue.showWin()
+    }
+
+    render() {
+      const { pop1, pop2, pop3 } = this.state;
+      return (
+        <div>
+          {pop1 && <div onClick={() => {
+            this.setState({
+              pop1: false
+            })
+            this.popupQueue.hide()
+          }}>弹窗1</div>}
+          {pop2 && <div onClick={() => {
+            this.setState({
+              pop2: false
+            })
+          }}>弹窗2</div>}
+          {pop3 && <div onClick={() => {
+            this.setState({
+              pop3: false
+            })
+            this.popupQueue.hide()
+          }}>弹窗3</div>}
+        </div>
+      )
+    }
+  };
+  ReactDOM.render(<Weather />, document.getElementById('app'));
+
+</script>

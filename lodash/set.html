@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function set(object, path, value) {
+      if (typeof object !== 'object') {
+        return object
+      };
+
+      if (!['string', 'object'].includes(typeof path) || path === null) {
+        return object
+      }
+
+      // 简单处理一下路径为字符的场景
+      if (typeof path === 'string') {
+        const reg = /[^\[\].]+/g;
+        path = path.match(reg)
+      }
+
+      const path_ = path.slice(0, -1)
+      const target_k = path.at(-1)
+      let obj = object
+      for (let k of path_) {
+        if (obj[k]) {
+          obj = obj[k]
+        } else {
+          obj = obj[k] = typeof k * 1 === 'NaN' ? {} : []
+        }
+
+      }
+      obj[target_k] = value
+    }
+
+
+    const obj = { a: { b: {} } };
+    set(obj, 'a.b.c[0]', 9)
+
+    const obj2 = {}
+    set(obj2, 'a.b', {})
+    console.log(obj);
+    console.log(obj2);
+  </script>
+</body>
+
+</html>

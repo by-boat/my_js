@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function get(object, path, defaultValue) {
+      // ========== 校验参数 ==================
+      if (typeof object !== 'object') {
+        return object
+      };
+
+      if (!['string', 'object'].includes(typeof path) || path === null) {
+        return object
+      }
+
+      // 简单处理一下路径为字符的场景
+      if (typeof path === 'string') {
+        const reg = /[^\[\].]+/g;
+        path = path.match(reg)
+      }
+
+      let obj = object
+      for (let k of path) {
+        if (obj[k]) {
+          obj = obj[k]
+        } else {
+          return defaultValue
+        }
+      }
+      return obj
+    }
+
+    const obj = { a: { b: { c: { a: {} } } } }
+    console.log(get(obj, 'a.b.c.a', 6))
+    console.log(get(obj, ['a', 'b', 'c', '1'], 6))
+    console.log(get(obj, null, 6))
+  </script>
+</body>
+
+</html>
