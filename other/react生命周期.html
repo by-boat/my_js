@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>react生命周期</title>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+</body>
+
+</html>
+
+<script type="text/babel">
+
+  const req = () => new Promise(resolve => setTimeout(resolve, 2e3));
+
+  class Weather extends React.Component {
+    constructor(props) {
+      super(props);
+      console.log('constructor  挂载阶段')
+    }
+
+    async componentWillMount() { // 16版本后被废弃 在constructor之后render之前调用
+      await req()
+      console.log('componentWillMount 挂载阶段')
+    }
+
+    async componentDidMount() {
+      await req()
+      console.log('componentDidMount  装载阶段')
+    }
+
+    shouldComponentUpdate() {
+      console.log('shouldComponentUpdate  更新阶段')
+    }
+
+    componentWillUnmount() {
+      console.log('componentWillUnmount  卸载阶段')
+    }
+
+    render() {
+      console.log('render 渲染')
+      return (
+        <div>hello word</div>
+      )
+    }
+  }
+
+  ReactDOM.render(<Weather />, document.getElementById('app'));
+</script>
+<script>
