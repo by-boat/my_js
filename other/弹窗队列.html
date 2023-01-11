@@ -32,13 +32,13 @@
 
   class PopupQueue {
     constructor(_this) {
-      this.queue = []
+      this.queue = {}
       this._this = _this;
     }
 
     registerWin(params) {
       if (this.queue === null) {
-        this.queue = []
+        this.queue = {}
       }
       const { show, close, type, is_now } = params;
       const v = {
@@ -48,7 +48,7 @@
       new Promise((resolve) => v.show_resolve = resolve).then(show.bind(this._this))
       new Promise((resolve) => v.close_resolve = resolve).then(close.bind(this._this))
 
-      this.queue.push(v)
+      this.queue[type] = v
 
       if (is_now) {
         this.show(type)
@@ -56,32 +56,23 @@
     }
 
     show(type) {
-      if (this.queue === null) {
+      if (this.queue === null || !this.queue[type]) {
         return
       }
-      for (let i = 0; i < this.queue.length; i++) {
-        const v = this.queue[i];
-        if (v.type === type) {
-          v.show_resolve()
-          break;
-        }
-      }
+      this.queue[type].show_resolve()
     }
 
     close(type, storage) {
-      for (let i = 0; i < this.queue.length; i++) {
-        const v = this.queue[i];
-        if (v.type === type) {
-          v.close_resolve()
-          this.queue.splice(i, 1);
-          // 关闭弹窗后想继续保留则再次注册新的promise
-          if (storage) {
-            this.registerWin(v)
-          }
-          break;
-        }
+      if (!this.queue[type]) {
+        return
       }
-      if (this.queue.length === 0) {
+      this.queue[type].close_resolve()
+      const v = { ...this.queue[type] }
+      delete this.queue[type]
+      if (storage) {
+        this.registerWin(v)
+      }
+      if (Object.keys(this.queue).length === 0) {
         this.queue = null;
       }
     }
@@ -139,7 +130,7 @@
           }}>弹窗1</div>}
           {pop2 && <div onClick={() => {
             this.popupQueue.close('pop2', true)
-            this.popupQueue.show('pop3')
+            this.popupQueue.show('pop1')
           }}>弹窗2</div>}
           {pop3 && <div onClick={() => {
             this.popupQueue.close('pop3', true)
