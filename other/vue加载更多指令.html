@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>loadmore指令</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<style>
+  .box {
+    width: 100%;
+    height: 300px;
+    overflow: auto;
+  }
+
+  .item {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: #000;
+  }
+
+  .loading {
+    text-align: center;
+    font-size: 36px;
+  }
+</style>
+
+<body>
+  <div id="root">
+    <div class="box" v-loadmore>
+      <div v-for="item in list" class="item">{{item}}</div>
+      <div v-show="is_loading" class="loading">加载中...</div>
+    </div>
+  </div>
+  <script>
+    new Vue({
+      el: document.querySelector('#root'),
+      data() {
+        return {
+          list: [],
+          is_loading: false,
+          paging: {
+            pages: 1,
+            page_size: 10
+          }
+        }
+      },
+      directives: {
+        loadmore: {
+          bind(el, binding, vnode) {
+            console.log({ el, binding, vnode })
+            const this_ = vnode.context;
+            el.bindEvent = (isListen) => {
+              const eventMedthod = isListen
+                ? "addEventListener"
+                : "removeEventListener";
+              el[eventMedthod]("scroll", el.scrollListener, false);
+            };
+            el.scrollListener = function (ev) {
+              if (this_.is_loading) {
+                return
+              }
+              const { scrollTop, scrollHeight, clientHeight } = el
+              if (scrollTop + clientHeight + 200 >= scrollHeight) {
+                this_.loadData();
+              }
+            };
+            el.bindEvent(true);
+          },
+          unbind(el) {
+            el.bindEvent(false);
+          },
+        }
+      },
+      methods: {
+        async loadData() {
+          this.is_loading = true;
+          await this.myReq();
+          this.is_loading = false;
+          const arr = []
+          for (let i = this.list.length; i < this.list.length + 10; i++) {
+            arr.push(i)
+          }
+          this.list = [...this.list, ...arr];
+        },
+        myReq() {
+          return new Promise((reslove) => {
+            console.log('请求')
+            setTimeout(reslove, 2e3)
+          })
+        }
+      },
+      mounted() {
+        this.loadData()
+      }
+    })
+  </script>
+</body>
+
+</html>
