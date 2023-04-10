@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .box1 {
+    width: 800px;
+    height: 200px;
+    margin: auto;
+    outline: 5px solid pink;
+  }
+
+  .box2 {
+    width: 200px;
+    height: 800px;
+    overflow: auto;
+    position: relative;
+    transform-origin: 0 0;
+    transform: translateY(200px) rotate(-90deg);
+  }
+
+  .box2::-webkit-scrollbar {
+    display: none
+  }
+
+  .box3 {
+    width: 1500px;
+    display: flex;
+    height: 200px;
+    transform-origin: 0 0;
+    transform: rotate(90deg);
+    position: absolute;
+    left: 200px;
+  }
+
+  p {
+    width: 300px;
+    height: 200px;
+    font-size: 40px;
+  }
+</style>
+
+<body>
+  <div class="box1">
+    <div class="box2">
+      <div class="box3">
+        <p>1</p>
+        <p>2</p>
+        <p>3</p>
+        <p>4</p>
+        <p>5</p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
