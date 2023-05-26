@@ -15,12 +15,26 @@
      * 使用循环实现
     */
 
-    console.log('start', new Date())
-    // for (let start = Date.now(); Date.now() - start < 3000;) { }
+    // console.log('start', new Date())
+    // // for (let start = Date.now(); Date.now() - start < 3000;) { }
 
-    let end = Date.now() + 3000;
-    while (Date.now() < end);
-    console.log('end', new Date())
+    // let end = Date.now() + 3000;
+    // while (Date.now() < end);
+    // console.log('end', new Date())
+
+
+
+
+    function page_await(time = 3000) {
+      const end = Date.now() + time;
+      while (Date.now() < end);
+    }
+
+    (() => {
+      console.log('start', new Date());
+      page_await()
+      console.log('end', new Date())
+    })()
 
   </script>
 </body>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"
+    name="viewport" />
+  <title>实现简单的hash路由</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    #content {
+      height: calc(100vh - 50px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3em;
+    }
+
+    #nav {
+      height: 50px;
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+    }
+
+    #nav div {
+      width: 25%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid black;
+    }
+
+    #nav div:not(:last-of-type) {
+      border-right: none;
+    }
+  </style>
+</head>
+
+<body>
+  <main id="content"></main>
+  <nav id="nav">
+    <div id="btn1">首页</div>
+    <div id="btn2">商城</div>
+    <div id="btn3">购物车</div>
+    <div id="btn4">我的</div>
+  </nav>
+</body>
+<script>
+  const btn1 = document.querySelector("#btn1");
+  const btn2 = document.querySelector("#btn2");
+  const btn3 = document.querySelector("#btn3");
+  const btn4 = document.querySelector("#btn4");
+
+  let _wr = function (type) {
+    let orig = history[type];
+    return function () {
+      let rv = orig.apply(this, arguments);
+      let e = new Event(type);
+      e.arguments = arguments;
+      window.dispatchEvent(e);
+      return rv;
+    }
+  }
+
+  history.pushState = _wr("pushState");
+  history.replaceState = _wr("replaceState");
+
+  btn1.addEventListener('click', () => {
+    history.pushState({ state: 1 }, null, './home')
+  })
+  btn2.addEventListener('click', () => {
+    history.pushState({ state: 2 }, null, './shop')
+  })
+  btn3.addEventListener('click', () => {
+    history.pushState({ state: 3 }, null, './shopping-cart')
+  })
+  btn4.addEventListener('click', () => {
+    history.pushState({ state: 4 }, null, './mine')
+  })
+
+  window.addEventListener('pushState',e=>{
+     const router = [
+    {
+      path: "/home",
+      name: "home",
+      component: "<div>首页内容</div>"
+    },
+    {
+      path: "/shop",
+      name: "shop",
+      component: "<div>商城内容</div>"
+    },
+    {
+      path: "/shopping-cart",
+      name: "shopping-cart",
+      component: "<div>购物车内容</div>"
+    },
+    {
+      path: "/mine",
+      name: "mine",
+      component: "<div>我的内容</div>"
+    }
+  ];
+  console.log(e.arguments)
+  const coms = router.find(v=>v.path === e.arguments[2].slice(1));
+  document.querySelector("#content").innerHTML = coms.component;
+  })
+</script>
+
+</html>
