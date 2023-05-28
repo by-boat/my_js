@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>比较版本号大小</title>
+</head>
+
+<body>
+  <script>
+    const v1 = '12.3.1', v2 = '12.3.1.0', v3 = '1.5.6-alpha.1', v4 = '7.2.3-beta';
+
+    function compareVersionSize(versions) {
+      function compareTwoVersionSize(v1, v2) {
+
+        function* walk(str) {
+          let part = '';
+          let terminals = ['.', '-'];
+          for (let i = 0; i < str.length; i++) {
+            if (terminals.includes(str[i])) {
+              yield part;
+              part = '';
+            } else {
+              part += str[i];
+            }
+          }
+          if (part) {
+            yield part;
+          }
+        }
+
+        const iterators1 = walk(v1);
+        const iterators2 = walk(v2);
+
+        let done = false;
+        while (!done) {
+          const item1 = iterators1.next();
+          const item2 = iterators2.next();
+          const value1 = +item1.value || 0;
+          const value2 = +item2.value || 0;
+
+          if (value1 !== value2) {
+            return value1 > value2 ? v1 : v2;
+          } else if (item1.value === undefined && item2.value === undefined) {
+            return [v1, v2];
+          }
+        }
+      }
+      let currentVersion = compareTwoVersionSize(versions[0], versions[1]);
+      for (let i = 2; i < versions.length; i++) {
+        currentVersion = compareTwoVersionSize(currentVersion, versions[i]);
+      }
+      return currentVersion
+    }
+
+
+    const versions = [v1, v2, '12.3.2', '12.3.2', '12.3.3'];
+
+    console.log('大小结果', compareVersionSize(versions));
+  </script>
+</body>
+
+</html>
