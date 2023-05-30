@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const str = `奥术大师大所多奥术大师多奥术大师多奥迪
+    爱搭搭所
+    奥术大师多
+    奥术大师多
+    奥术大师多13217007181a.1c阿萨德
+    110120
+    奥术大师多
+    奥术大师多1.3217007181a1`;
+    const reg = new RegExp(/[^\.|^1]1[3-9][0-9]{9}[^\.|\d]/, 'g');
+    const result = str.match(reg);
+    console.log(result);
+
+  </script>
+</body>
+
+</html>
