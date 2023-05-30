@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      const haOwnProperty = Object.prototype.hasOwnProperty;
+      const hasOwn = (target, key) => haOwnProperty.call(target, key);
+      let data = {
+        age: 18,
+        name: "彦祖",
+      };
+
+      data = new Proxy(data, {
+        get(target, key, receiver) {
+          console.log("get", Reflect.get(target, key, receiver));
+
+          return Reflect.get(target, key, receiver);
+        },
+        set(target, key, value, receiver) {
+          const oldValue = Reflect.get(target, key, receiver);
+          let result = true;
+          if (oldValue !== value) {
+            result = Reflect.set(target, key, value, receiver);
+            // 触发更新...
+          }
+          console.log("set", oldValue, value);
+          // set方法需要返回布尔值
+          return result;
+        },
+        deleteProperty(target, key,receiver) {
+          console.log("删除", target, key,);
+          // 首先要判断当前target中是否有自己的key属性
+          // 如果存在key属性，并且删除要触发更新
+          const hasKey = hasOwn(target, key);
+          const result = Reflect.deleteProperty(target, key);
+          if (hasKey && result) {
+            // 触发更新...
+          }
+          console.log("del", Reflect.get(target, key, receiver));
+          return result;
+        },
+      });
+
+      let aa = data.age;
+      data.age++;
+      delete data.name;
+    </script>
+  </body>
+</html>

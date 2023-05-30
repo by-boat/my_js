@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="box">click</div>
+  <script>
+    /** 
+     * 封装数据劫持函数
+     * 
+    */
+    const box = document.querySelector(".box");
+
+    function observe(data) {
+      if (!data || typeof data !== "object") {
+        return;
+      }
+      // 取出所有属性遍历
+      Object.keys(data).forEach(function (key) {
+        defineReactive(data, key, data[key]);
+      });
+    }
+
+    function defineReactive(data, key, val) {
+      observe(val); // 监听子属性
+      Object.defineProperty(data, key, {
+        enumerable: true, // 可枚举
+        configurable: false, // 不能再define
+        get: function () {
+          return val;
+        },
+        set: function (newVal) {
+          console.log("哈哈哈，监听到值变化了 ", val, " --> ", newVal);
+          val = newVal;
+        },
+      });
+    }
+
+    const obj1 = { name: 19, age: 18 };
+    observe(obj1);
+    box.onclick = () => {
+      obj1.age++;
+      // obj1.name++;
+      console.log(obj1);
+    };
+    let a = obj1.age;
+  </script>
+</body>
+
+</html>
