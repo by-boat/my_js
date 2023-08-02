@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  .box {
+    margin: auto;
+    margin-top: 200px;
+    /* border: 2px solid #ccc; */
+    display: flex;
+    width: 700px;
+    column-gap: 50px;
+  }
+
+  .l5 {
+    height: 60px;
+    display: flex;
+    column-gap: 15px;
+  }
+
+  .r2 {
+    height: 60px;
+    display: flex;
+    column-gap: 15px;
+  }
+
+  .hz {
+    width: 80px;
+    height: 50px;
+    border: 2px solid #000;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .gl {
+    width: 80px;
+    height: 250px;
+    /* animation: scroll 2s ease-out; */
+    transform: translateY(0);
+    transition: all 1.5s ease-out;
+  }
+
+  .rl {
+    width: 80px;
+    height: 250px;
+    /* animation: scroll 2s ease-out; */
+    transform: translateY(0);
+    transition: all 5.6s ease-out;
+  }
+
+  .rl2 {
+    transition: all 6.2s ease-out;
+  }
+
+  .gl2 {
+    transition: all 2.3s ease-out;
+  }
+
+  .gl2 {
+    transition: all 2.3s ease-out;
+  }
+
+  .gl3 {
+    transition: all 3.2s ease-out;
+  }
+
+  .gl4 {
+    transition: all 4s ease-out;
+  }
+
+  .gl5 {
+    transition: all 4.8s ease-out;
+  }
+
+  .gl>div {
+    width: 80px;
+    height: 50px;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+  }
+
+  .rl>div {
+    width: 80px;
+    height: 50px;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 50px;
+    color: #fff;
+  }
+
+  .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 180px;
+    height: 50px;
+    /* border: 2px solid #0be099; */
+    background: pink;
+    border-radius: 30px;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: auto;
+    margin-top: 40px;
+  }
+
+  .b1 {
+    background: linear-gradient(to right, #dfcbcc, pink);
+  }
+
+  .b2 {
+    background: linear-gradient(to right, #ed3a97, pink);
+  }
+
+  .b3 {
+    background: linear-gradient(to right, #bd6fef, pink);
+  }
+
+  .b4 {
+    background: linear-gradient(to right, #5e58dd, pink);
+  }
+
+  .b5 {
+    background: linear-gradient(to right, #58addd, pink);
+  }
+
+  .b6 {
+    background: linear-gradient(to right, #58ddbd, pink);
+  }
+
+  .b7 {
+    background: linear-gradient(to right, #80dd58, pink);
+  }
+
+  .b8 {
+    background: linear-gradient(to right, #ddd158, pink);
+  }
+
+  .b9 {
+    background: linear-gradient(to right, #dd8258, pink);
+  }
+
+  .b10 {
+    background: linear-gradient(to right, #58d8dd, #c0ffdf);
+  }
+
+  .b11 {
+    background: linear-gradient(to right, #ebb1b1, #c0ffdf);
+  }
+
+  .b12 {
+    background: linear-gradient(to right, #b1ebea, #97d5b6);
+  }
+
+  .b13 {
+    background: linear-gradient(to right, #dcf379, #97d5b6);
+  }
+
+  .b14 {
+    background: linear-gradient(to right, #e1edac, #a6df4e, #67eb57);
+  }
+
+  .b15 {
+    background: linear-gradient(to right, #86a4c7, #2fbfcf, #42e78c);
+  }
+
+  .b16 {
+    background: linear-gradient(to right, #b986c7, #932fcf, #42e78c);
+  }
+
+  .b17 {
+    background: linear-gradient(to right, pink, #c898e5, #42c9e7);
+  }
+
+  .b18 {
+    background: linear-gradient(to right, pink, #bd82e1, #42c9e7);
+  }
+
+  .b19 {
+    background: linear-gradient(to right, pink, #bd82e1, #61f4c3);
+  }
+
+  .b20 {
+    background: linear-gradient(to right, pink, #bd82e1, #a9e7cd);
+  }
+
+  .b21 {
+    background: linear-gradient(to right, pink, #f23a8a, #a9e7cd);
+  }
+
+  .b22 {
+    background: linear-gradient(to right, pink, #f23a8a, #c66aff);
+  }
+
+  .b23 {
+    background: linear-gradient(to right, pink, #fa4a97, #c97df8);
+  }
+
+  .b24 {
+    background: linear-gradient(to right, pink, #fa4a97, #7de4f8);
+  }
+
+  .b25 {
+    background: linear-gradient(to right, pink, #f635b6, #7df8bd);
+  }
+
+  .b26 {
+    background: linear-gradient(to right, #e47bc1, #f635b6, #888cc8);
+  }
+
+  .b27 {
+    background: linear-gradient(to right, #441f38, #a80873, #26284a);
+  }
+
+  .b28 {
+    background: linear-gradient(to right, #f6a57a, #eeee69, #9af23c);
+  }
+
+  .b29 {
+    background: linear-gradient(to right, #f15705, #fdfd2d, #5fb206);
+  }
+
+  .b30 {
+    background: linear-gradient(to right, #2be3f0, #0be099, #17a740);
+  }
+</style>
+
+<body>
+  <div class="box">
+    <div class="l5">
+      <div class="hz">
+        <div class="gl gl1">
+        </div>
+      </div>
+      <div class="hz">
+        <div class="gl gl2">
+        </div>
+      </div>
+      <div class="hz">
+        <div class="gl gl3">
+        </div>
+      </div>
+      <div class="hz">
+        <div class="gl gl4">
+        </div>
+      </div>
+      <div class="hz">
+        <div class="gl gl5">
+        </div>
+      </div>
+    </div>
+    <div class="r2">
+      <div class="hz">
+        <div class="rl">
+        </div>
+      </div>
+      <div class="hz">
+        <div class="rl rl2">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div onclick="go()" class="btn">一发入魂！</div>
+  </div>
+  </div>
+</body>
+
+<script>
+  function generateRandomNumber(a = 35) {
+    return Math.floor(Math.random() * a) + 1;
+  }
+
+  function shuffle(arr) {
+    var len = arr.length;
+    for (var i = 0; i < len - 1; i++) {
+      var index = parseInt(Math.random() * (len - i));
+      var temp = arr[index];
+      arr[index] = arr[len - i - 1];
+      arr[len - i - 1] = temp;
+    }
+    return arr;
+  }
+  const l5_arrs = [];
+  const gls = document.querySelectorAll('.gl');
+  const getl5 = () => {
+    for (let i = 0; i < gls.length; i++) {
+      let arr = [];
+      for (let i = 1; i < 36; i++) {
+        arr.push(i < 10 ? '0' + i : i)
+      }
+      gls[i].style.transform = "translateY(0px)"
+      arr = shuffle(arr)
+      // arr.unshift('/')
+      arr = [...arr, ...arr]
+      l5_arrs.push(arr)
+      arr.forEach((v, idx) => {
+        let bg = idx
+        if (bg > 30) {
+          bg = bg - 30
+          if (bg > 30) {
+            bg = bg - 30
+          }
+        }
+        const div = document.createElement('div');
+        div.innerText = v
+        div.className = `b${bg}`
+        gls[i].appendChild(div)
+      })
+    }
+  }
+
+  const r2_arrs = [];
+  const rls = document.querySelectorAll('.rl');
+  const getr2 = () => {
+    for (let i = 0; i < rls.length; i++) {
+      let arr = [];
+      for (let i = 1; i < 13; i++) {
+        arr.push(i < 10 ? '0' + i : i)
+      }
+      rls[i].style.transform = "translateY(0px)"
+      arr = shuffle(arr)
+      // arr.unshift('/')
+      arr = [...arr, ...arr, ...arr, ...arr]
+      r2_arrs.push(arr)
+      arr.forEach((v, idx) => {
+        let bg = idx
+        if (bg > 30) {
+          bg = bg - 30
+          if (bg > 30) {
+            bg = bg - 30
+          }
+        }
+        const div = document.createElement('div');
+        div.innerText = v
+        div.className = `b${bg}`
+        rls[i].appendChild(div)
+      })
+    }
+  }
+  getl5()
+  getr2()
+  const go = () => {
+    let arr = [];
+    while (arr.length < 5) {
+      const t = generateRandomNumber(35)
+      if (!arr.includes(t)) {
+        arr.push(t)
+      }
+    }
+    arr = arr.sort((a, b) => a - b);
+
+    arr.forEach((v, i) => arr[i] = v < 10 ? '0' + v : v);
+
+    let arr2 = [];
+    while (arr2.length < 2) {
+      const t = generateRandomNumber(12)
+      if (!arr2.includes(t)) {
+        arr2.push(t)
+      }
+    }
+    arr2 = arr2.sort((a, b) => a - b);
+    arr2.forEach((v, i) => arr2[i] = v < 10 ? '0' + v : v);
+
+
+    arr.forEach((v, i) => {
+      const xb = l5_arrs[i].lastIndexOf(v)
+      gls[i].style.transform = `translateY(-${xb * 50}px)`
+    })
+    arr2.forEach((v, i) => {
+      const xb = r2_arrs[i].lastIndexOf(v)
+      rls[i].style.transform = `translateY(-${xb * 50}px)`
+    })
+
+
+  }
+</script>
+
+</html>

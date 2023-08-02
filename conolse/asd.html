@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    function add(aa) {
+      console.trace(6666);
+      console.table([{ "pos_index": "0", "icon_selected": "https://mystore-img-test.was.ink/upload/207bfb21-8766-47e0-a046-7637d8ac2358.png", "link": "", "text": "首页", "link_name": "首页", "is_default": false, "icon_unselected": "https://mystore-img-test.was.ink/upload/07877c0f-23ea-4023-87af-bd030c4c6118.png", "color_unselected": "#999999", "color_selected": "#000000", "wxlink": "/pages/index" }, { "pos_index": "1", "icon_selected": "https://mystore-img-test.was.ink/upload/70b8740e-13d7-4966-a55d-0c1b7ef09657.png", "link": "", "text": "商城", "link_name": "商城", "is_default": true, "icon_unselected": "https://mystore-img-test.was.ink/upload/387570fd-9d05-424d-9e45-587daa12deaa.png", "color_unselected": "#999999", "color_selected": "#000000", "wxlink": "/pages/packageA/index" }, { "pos_index": "2", "icon_selected": "https://mystore-img-test.was.ink/upload/8f01290c-1cfa-4e37-86bd-db27cc7200fd.png", "link": "", "text": "分类", "link_name": "分类", "is_default": false, "icon_unselected": "https://mystore-img-test.was.ink/upload/0f83bcf6-4f43-4b78-a8fa-9c01b75dbf31.png", "color_unselected": "#999999", "color_selected": "#000000", "wxlink": "/pages/item/category" }, { "pos_index": "3", "icon_selected": "https://mystore-img-test.was.ink/upload/c0bcf0a0-d131-44f9-a663-506564156cee.png", "link": "", "text": "购物车", "link_name": "购物车", "is_default": false, "icon_unselected": "https://mystore-img-test.was.ink/upload/55ec083f-2507-4427-8b0d-ddc4161b76b0.png", "color_unselected": "#999999", "color_selected": "#000000", "wxlink": "/pages/cart/espier-index" }, { "pos_index": "4", "icon_selected": "https://mystore-img-test.was.ink/upload/0cac08b6-31d9-48c4-9f7c-fdaa76e045f4.png", "link": "", "text": "我的", "link_name": "我的", "is_default": false, "icon_unselected": "https://mystore-img-test.was.ink/upload/da1f951f-7a65-4fcf-9d9a-db47a4f44e52.png", "color_unselected": "#999999", "color_selected": "#000000", "wxlink": "/pages/others/home/index" }])
+    }
+
+    function fn() {
+      add(1);
+    }
+    function fn2() {
+      add(2);
+    }
+
+    fn();
+    fn2();
+
+
+    console.group();
+    console.log(11);
+    console.log(22);
+    console.groupEnd();
+    console.log(11);
+    console.log(22);
+  </script>
+</body>
+
+</html>

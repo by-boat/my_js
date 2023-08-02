@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>输入url获得参数组成的json对象</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    input {
+      width: 80%;
+      height: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- <input type="text" id="url"> -->
+  <h2>确保目标url复制在剪切板，点击生成即可</h2>
+  <button onclick="fn()">生 成</button>
+  <div class="url">url：</div>
+  <div class="params">params：</div>
+  <script>
+    const fn = async () => {
+
+      // const urlEl = document.querySelector('#url');
+      const urldiv = document.querySelector('.url');
+      const paramsdiv = document.querySelector('.params');
+      // let url = urlEl.value;
+      let url = await navigator.clipboard.readText();
+      const a = url.split('?')[0]
+      url = url.split('?')[1];
+      let obj = "{ <br />";
+      url = url.split("&");
+      for (let k of url) {
+        const key = k.split('=')[0];
+        const value = k.split('=')[1];
+        // obj[key] = decodeURIComponent(value) + "<br />"
+        obj += `"${key}": "${decodeURIComponent(value)}",<br />`
+      }
+      obj += `}`
+      urldiv.innerHTML = `url：${a}`;
+      // paramsdiv.innerHTML = `params：${JSON.stringify(obj, null, "  ")}`;
+      paramsdiv.innerHTML = `params：${obj}`;
+      console.log(url)
+      console.log(obj)
+      console.log()
+    }
+  </script>
+</body>
+
+</html>
