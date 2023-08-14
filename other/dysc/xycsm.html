@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+  <style type="text/css">
+    body {
+      display: flex;
+      height: 95vh;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      background-color: #008B64;
+      /* animation: run-rotate 3s ease-out infinite; */
+    }
+
+    .item {
+      position: absolute;
+      left: 50%;
+      top: calc(50% - 41px);
+      width: 0px;
+      height: 0px;
+      border: 41px solid transparent;
+      border-left-width: 0px;
+      border-right: 150px solid #A52A2A;
+      transform-origin: 0px 50%;
+    }
+
+    .item:nth-child(odd) {
+      border-right-color: cornflowerblue;
+    }
+
+    .item:nth-child(even) {
+      border-right-color: #A52A2A;
+    }
+
+    .item-content {
+      position: absolute;
+      right: -125px;
+      top: 50%;
+      color: white;
+    }
+
+    @keyframes run-rotate {
+      from {
+        transform: rotateZ(0deg);
+      }
+
+      to {
+        transform: rotateZ(calc(360deg * 3));
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="item">
+      <div class="item-content">1</div>
+    </div>
+    <div class="item">
+      <div class="item-content">2</div>
+    </div>
+    <div class="item">
+      <div class="item-content">3</div>
+    </div>
+    <div class="item">
+      <div class="item-content">4</div>
+    </div>
+    <div class="item">
+      <div class="item-content">5</div>
+    </div>
+    <div class="item">
+      <div class="item-content">6</div>
+    </div>
+    <div class="item">
+      <div class="item-content">7</div>
+    </div>
+    <div class="item">
+      <div class="item-content">8</div>
+    </div>
+    <div class="item">
+      <div class="item-content">8</div>
+    </div>
+    <div class="item">
+      <div class="item-content">10</div>
+    </div>
+    <div class="item">
+      <div class="item-content">11</div>
+    </div>
+    <div class="item">
+      <div class="item-content">12</div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    $(function () {
+      $('.item').each(function (index, item) {
+        $(item).css('transform', 'rotateZ(' + (index * 30) + 'deg)');
+      });
+    });
+  </script>
+</body>
+
+</html>
