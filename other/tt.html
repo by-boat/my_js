@@ -2,72 +2,38 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <title>列表无限滚动</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>拉伸的文字</title>
 </head>
+
+<body>
+  <span>
+    <p class="stretch"></p>
+  </span>
+</body>
 <style>
-  .container {
-    position: relative;
-    background-color: #a4ffcc;
-    /* 父容器需要有明确的高度 */
-    height: 120px;
-    width: 200px;
-    margin: auto;
-    overflow: hidden;
+  .stretch {
+    width: 20px;
+    height: 20px;
+    border-radius: 14px;
+    border: 4px solid #000;
+    animation: play 1s infinite;
   }
 
-  .container>.scroll-list {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    animation: scroll 3s linear infinite normal;
-  }
 
-  .container>.scroll-list>div {
-    width: 100%;
-    /* 滚动的项目需要有具体的高度 */
-    height: 30px;
-    background-color: #1ea7ff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-  }
+  @keyframes play {
+    0% {
+      /* .stretch { */
+      width: 20px;
+      /* } */
+    }
 
-  .container>.scroll-list>div:nth-child(2n) {
-    background-color: #18d9f8;
-  }
-
-  @keyframes scroll {
     100% {
-      /* 需要滚动内容的总高度 */
-      top: -300px;
+      width: 200px;
     }
   }
 </style>
-
-<body>
-  <div class="container">
-    <div class="scroll-list">
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <div>5</div>
-      <div>6</div>
-      <div>7</div>
-      <div>8</div>
-      <div>9</div>
-      <div>10</div>
-      <!-- 下面代码是为了让滚动内容能够多展示一屏(去除留白/无限轮播)：数量请自行根据高度进行计算 -->
-      <div>1</div>
-      <div>2</div>
-      <div>3</div>
-      <div>4</div>
-      <!-- <div>5</div> -->
-    </div>
-  </div>
-</body>
 
 </html>
